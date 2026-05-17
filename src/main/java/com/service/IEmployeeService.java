@@ -4,7 +4,7 @@ import com.entity.Employee;
 
 import java.util.List;
 
-public interface EmployeeService {
+public interface IEmployeeService {
 
     Employee addEmployee(Employee employee);
 

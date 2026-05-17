@@ -13,8 +13,8 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.moviemaster</groupId>
-    <artifactId>movie-master</artifactId>
+    <groupId>com.fitness</groupId>
+    <artifactId>fitness-center-membership</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 

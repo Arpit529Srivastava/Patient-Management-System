@@ -1,12 +1,12 @@
-package com.moviemaster;
+package com.fitness;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MovieMasterApplication {
+public class FitnessCenterApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MovieMasterApplication.class, args);
+        SpringApplication.run(FitnessCenterApplication.class, args);
     }
 }

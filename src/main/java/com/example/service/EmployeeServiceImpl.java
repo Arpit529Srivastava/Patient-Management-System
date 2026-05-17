@@ -1,7 +1,7 @@
-package com.employee.service;
+package com.example.service;
 
-import com.employee.entity.Employee;
-import com.employee.repository.EmployeeRepository;
+import com.example.entity.Employee;
+import com.example.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee getEmployee(int empid) {
-        Optional<Employee> optional = employeeRepository.findById(empid);
-        return optional.orElse(null);
+        return employeeRepository.findById(empid).orElse(null);
     }
 
     @Override
@@ -44,6 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public void deleteEmployee(int empid) {
         Optional<Employee> optional = employeeRepository.findById(empid);
         if (optional.isPresent()) {

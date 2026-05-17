@@ -13,7 +13,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.employee</groupId>
+    <groupId>com.example</groupId>
     <artifactId>employee-info-management</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>

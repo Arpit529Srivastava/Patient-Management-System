@@ -1,7 +1,7 @@
-package com.employee;
+package com.example;
 
-import com.employee.entity.Employee;
-import com.employee.service.EmployeeService;
+import com.example.entity.Employee;
+import com.example.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -35,30 +35,26 @@ public class EmployeeManagementApplication implements CommandLineRunner {
         System.out.println("Added: " + saved2);
         System.out.println("Added: " + saved3);
 
-        // Get a single employee
-        Employee fetched = employeeService.getEmployee(saved1.getEmpid());
-        System.out.println("Fetched Employee: " + fetched);
+        // Get single employee
+        System.out.println("Fetched: " + employeeService.getEmployee(saved1.getEmpid()));
 
-        // Get all employees sorted by name ascending
-        List<Employee> allEmployees = employeeService.getAllEmployee();
+        // Get all sorted by name ASC
+        List<Employee> all = employeeService.getAllEmployee();
         System.out.println("All Employees (sorted by name):");
-        allEmployees.forEach(System.out::println);
+        all.forEach(System.out::println);
 
         // Update salary
         employeeService.updateSalary(saved1.getEmpid(), 80000.00);
-        System.out.println("Updated salary for empid " + saved1.getEmpid());
         System.out.println("After salary update: " + employeeService.getEmployee(saved1.getEmpid()));
 
-        // Update designation
+        // Update designation (@Query approach)
         employeeService.updateDesignation(saved2.getEmpid(), "Senior Project Manager");
-        System.out.println("Updated designation for empid " + saved2.getEmpid());
         System.out.println("After designation update: " + employeeService.getEmployee(saved2.getEmpid()));
 
-        // Delete an employee
+        // Delete existing employee
         employeeService.deleteEmployee(saved3.getEmpid());
-        System.out.println("Deleted employee with empid " + saved3.getEmpid());
 
-        // Try deleting a non-existent employee
+        // Delete non-existent employee (should print message)
         employeeService.deleteEmployee(999);
 
         // Final list

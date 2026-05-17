@@ -13,8 +13,8 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.fitness</groupId>
-    <artifactId>fitness-center-membership</artifactId>
+    <groupId>com.employee</groupId>
+    <artifactId>employee-info-management</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -25,15 +25,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

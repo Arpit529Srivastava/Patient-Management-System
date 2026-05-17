@@ -1,0 +1,20 @@
+package com.employee.service;
+
+import com.employee.entity.Employee;
+
+import java.util.List;
+
+public interface EmployeeService {
+
+    Employee addEmployee(Employee employee);
+
+    Employee getEmployee(int empid);
+
+    List<Employee> getAllEmployee();
+
+    void updateSalary(int empid, double salary);
+
+    void updateDesignation(int empid, String empdesignation);
+
+    void deleteEmployee(int empid);
+}

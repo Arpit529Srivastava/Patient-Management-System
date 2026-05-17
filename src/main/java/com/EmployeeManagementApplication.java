@@ -1,19 +1,21 @@
-package com.example;
+package com;
 
-import com.example.entity.Employee;
-import com.example.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.entity.Employee;
+import com.service.EmployeeService;
 
 import java.util.List;
 
 @SpringBootApplication
 public class EmployeeManagementApplication implements CommandLineRunner {
 
+    // Provide necessary annotation
     @Autowired
-    private EmployeeService employeeService;
+    EmployeeService employeeService;
 
     public static void main(String[] args) {
         SpringApplication.run(EmployeeManagementApplication.class, args);
@@ -21,6 +23,8 @@ public class EmployeeManagementApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        // Invoke the CRUD operations in Service class and check the correctness
 
         // Add employees
         Employee emp1 = new Employee(0, "Alice Johnson", "Software Engineer", 75000.00);
@@ -38,7 +42,7 @@ public class EmployeeManagementApplication implements CommandLineRunner {
         // Get single employee
         System.out.println("Fetched: " + employeeService.getEmployee(saved1.getEmpid()));
 
-        // Get all sorted by name ASC
+        // Get all sorted by empname ASC
         List<Employee> all = employeeService.getAllEmployee();
         System.out.println("All Employees (sorted by name):");
         all.forEach(System.out::println);
@@ -47,7 +51,7 @@ public class EmployeeManagementApplication implements CommandLineRunner {
         employeeService.updateSalary(saved1.getEmpid(), 80000.00);
         System.out.println("After salary update: " + employeeService.getEmployee(saved1.getEmpid()));
 
-        // Update designation (@Query approach)
+        // Update designation using @Query approach
         employeeService.updateDesignation(saved2.getEmpid(), "Senior Project Manager");
         System.out.println("After designation update: " + employeeService.getEmployee(saved2.getEmpid()));
 

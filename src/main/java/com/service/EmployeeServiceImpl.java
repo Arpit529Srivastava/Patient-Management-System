@@ -1,7 +1,7 @@
-package com.example.service;
+package com.service;
 
-import com.example.entity.Employee;
-import com.example.repository.EmployeeRepository;
+import com.entity.Employee;
+import com.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

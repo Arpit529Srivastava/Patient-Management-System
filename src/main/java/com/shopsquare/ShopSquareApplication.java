@@ -1,12 +1,12 @@
-package com.bank;
+package com.shopsquare;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BankApplication {
+public class ShopSquareApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BankApplication.class, args);
+        SpringApplication.run(ShopSquareApplication.class, args);
     }
 }

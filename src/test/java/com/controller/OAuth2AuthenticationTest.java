@@ -1,10 +1,7 @@
 package com.controller;
 
-import com.entity.Patient;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.repository.PatientRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,13 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PatientControllerTest {
+class OAuth2AuthenticationTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private PatientRepository patientRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -39,38 +33,39 @@ class PatientControllerTest {
     @Value("${oauth2.client.secret}")
     private String clientSecret;
 
-    private String accessToken;
-
-    @BeforeEach
-    void setUp() throws Exception {
-        patientRepository.deleteAll();
-        patientRepository.save(new Patient(0, "John Doe", 35, "Male", "9876543210"));
-        accessToken = obtainAccessToken();
+    @Test
+    void clientCredentialsGrant_issuesAccessToken() throws Exception {
+        mockMvc.perform(post("/oauth2/token")
+                        .with(httpBasic(clientId, clientSecret))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("grant_type", "client_credentials")
+                        .param("scope", "read write"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.access_token").exists())
+                .andExpect(jsonPath("$.token_type").value("Bearer"))
+                .andExpect(jsonPath("$.expires_in").isNumber());
     }
 
     @Test
-    void getPatientById_found_returns200() throws Exception {
-        int patientId = patientRepository.findAll().get(0).getPatientId();
+    void protectedHello_withoutToken_returns401() throws Exception {
+        mockMvc.perform(get("/api/hello"))
+                .andExpect(status().isUnauthorized());
+    }
 
-        mockMvc.perform(get("/api/patients/" + patientId)
+    @Test
+    void protectedHello_withValidToken_returns200() throws Exception {
+        String accessToken = obtainAccessToken();
+
+        mockMvc.perform(get("/api/hello")
                         .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.patientId").value(patientId))
-                .andExpect(jsonPath("$.patientName").value("John Doe"))
-                .andExpect(jsonPath("$.age").value(35));
+                .andExpect(jsonPath("$.message").value("Hello from the protected OAuth2 resource server!"));
     }
 
     @Test
-    void getPatientById_notFound_returns404() throws Exception {
-        mockMvc.perform(get("/api/patients/999")
-                        .header("Authorization", "Bearer " + accessToken))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Patient not found with id: 999"));
-    }
-
-    @Test
-    void getPatientById_withoutToken_returns401() throws Exception {
-        mockMvc.perform(get("/api/patients/1"))
+    void protectedApi_withInvalidToken_returns401() throws Exception {
+        mockMvc.perform(get("/api/hello")
+                        .header("Authorization", "Bearer invalid-token"))
                 .andExpect(status().isUnauthorized());
     }
 

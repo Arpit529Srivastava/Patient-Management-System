@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,6 +35,16 @@ class OAuth2AuthenticationTest {
     private String clientSecret;
 
     @Test
+    void oauth2TokenEndpoint_isExposed() throws Exception {
+        mockMvc.perform(post("/oauth2/token")
+                        .with(httpBasic(clientId, clientSecret))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("grant_type", "client_credentials")
+                        .param("scope", "read"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void clientCredentialsGrant_issuesAccessToken() throws Exception {
         mockMvc.perform(post("/oauth2/token")
                         .with(httpBasic(clientId, clientSecret))
@@ -43,7 +54,14 @@ class OAuth2AuthenticationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.access_token").exists())
                 .andExpect(jsonPath("$.token_type").value("Bearer"))
-                .andExpect(jsonPath("$.expires_in").isNumber());
+                .andExpect(jsonPath("$.expires_in").isNumber())
+                .andExpect(jsonPath("$.scope").value("read write"));
+    }
+
+    @Test
+    void tokenGeneration_usingClientCredentialsFlow() throws Exception {
+        String accessToken = obtainAccessToken();
+        assertNotNull(accessToken);
     }
 
     @Test
